@@ -9,13 +9,13 @@ export default function SuccessPage() {
         <div className="flex justify-center mb-6">
           <CheckCircle className="h-16 w-16 text-green-500" />
         </div>
-        <h1 className="text-3xl font-bold mb-4">Thank You for Your Purchase!</h1>
+        <h1 className="text-3xl font-bold mb-4">Vielen Dank für Ihren Kauf!</h1>
         <p className="text-muted-foreground mb-8">
-          Your payment was successful and your photo will be available for download shortly. We've sent a confirmation
-          email with all the details.
+          Ihre Zahlung war erfolgreich und Ihr Foto wird in Kürze zum Download bereitstehen. Wir haben eine
+          Bestätigungs-E-Mail mit allen Details gesendet.
         </p>
         <Link href="/">
-          <Button>Return to Gallery</Button>
+          <Button>Zurück zur Galerie</Button>
         </Link>
       </div>
     </div>

@@ -5,7 +5,7 @@ import "@/app/globals.css"
 
 export const metadata = {
   title: "PETER KRÜGER Photography",
-  description: "A beautiful photo gallery with high-quality photographs available for purchase",
+  description: "Eine schöne Fotogalerie mit hochwertigen Fotografien zum Kauf",
     generator: 'v0.dev'
 }
 

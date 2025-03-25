@@ -20,12 +20,13 @@ export default function CheckoutButton({ photo }: CheckoutButtonProps) {
       const url = await createCheckoutSession(photo)
       window.location.href = url
     } catch (error) {
-      console.error("Checkout error:", error)
+      console.error("Zahlungsfehler:", error)
       toast({
-        title: "Checkout Error",
-        description: "There was a problem processing your payment. Please try again.",
+        title: "Zahlungsfehler",
+        description: "Bei der Verarbeitung Ihrer Zahlung ist ein Problem aufgetreten. Bitte versuchen Sie es erneut.",
         variant: "destructive",
       })
+    } finally {
       setIsLoading(false)
     }
   }
@@ -36,8 +37,7 @@ export default function CheckoutButton({ photo }: CheckoutButtonProps) {
       disabled={isLoading}
       className="w-full bg-black text-white hover:bg-gray-800 py-6 text-base"
     >
-      {isLoading ? "Processing..." : "Purchase Full Quality Image"}
+      {isLoading ? "In Bearbeitung..." : "Bild kaufen"}
     </Button>
   )
 }
-

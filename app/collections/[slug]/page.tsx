@@ -54,7 +54,7 @@ export default async function CollectionPage({ params }: CollectionPageProps) {
       {photos.length > 0 ? (
         <PhotoGallery photos={photos} />
       ) : (
-        <p className="text-center text-gray-600">No photos found in this collection.</p>
+        <p className="text-center text-gray-600">Keine Fotos in dieser Kollektion gefunden.</p>
       )}
     </div>
   )

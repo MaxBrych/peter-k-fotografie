@@ -18,7 +18,7 @@ export default async function CollectionsPage() {
 
   return (
     <div className="container mx-auto px-4 py-12">
-      <h1 className="text-3xl font-medium text-center mb-12">Collections</h1>
+      <h1 className="text-3xl font-medium text-center mb-12">Kollektionen</h1>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {collectionsWithPhoto.map((collection) => (
@@ -33,7 +33,7 @@ export default async function CollectionsPage() {
                 />
               ) : (
                 <div className="w-full h-full bg-gray-100 flex items-center justify-center">
-                  <span className="text-gray-400">No photos</span>
+                  <span className="text-gray-400">Keine Fotos</span>
                 </div>
               )}
             </div>

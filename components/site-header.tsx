@@ -1,5 +1,5 @@
 import Link from "next/link"
-import { Instagram, Twitter } from "lucide-react"
+import { Facebook, Instagram, Twitter } from "lucide-react"
 
 export function SiteHeader() {
   return (
@@ -12,16 +12,14 @@ export function SiteHeader() {
 
           <nav className="hidden md:flex items-center space-x-8">
             <Link href="/collections" className="text-sm hover:underline">
-              Collections
+              Kollektionen
             </Link>
-            <Link href="/blog" className="text-sm hover:underline">
-              Blog
-            </Link>
+            
             <Link href="/about" className="text-sm hover:underline">
-              About
+              Über Mich
             </Link>
             <Link href="/contact" className="text-sm hover:underline">
-              Contact
+              Kontakt
             </Link>
           </nav>
 
@@ -31,8 +29,8 @@ export function SiteHeader() {
               <span className="sr-only">Instagram</span>
             </Link>
             <Link href="https://twitter.com" className="text-gray-700 hover:text-gray-900">
-              <Twitter className="h-5 w-5" />
-              <span className="sr-only">Twitter</span>
+              <Facebook className="h-5 w-5" />
+              <span className="sr-only">Facebook</span>
             </Link>
           </div>
         </div>

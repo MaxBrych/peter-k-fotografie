@@ -35,7 +35,7 @@ export default async function PhotoPage({ params }: PhotoPageProps) {
     <div className="container mx-auto px-4 py-12">
       <div className="mb-8">
         <Link href="/" className="text-sm text-gray-600 hover:text-black hover:underline">
-          ← Back to gallery
+          ← Zurück zur Galerie
         </Link>
       </div>
 
@@ -57,7 +57,7 @@ export default async function PhotoPage({ params }: PhotoPageProps) {
 
           {photo.collections && photo.collections.length > 0 && (
             <div className="mb-6">
-              <div className="text-sm text-gray-600 mb-1">Collections:</div>
+              <div className="text-sm text-gray-600 mb-1">Kollektionen:</div>
               <div className="flex flex-wrap gap-2">
                 {photo.collections.map((collection) => (
                   <Link
@@ -75,27 +75,27 @@ export default async function PhotoPage({ params }: PhotoPageProps) {
           <div className="text-xl font-medium mb-6">${photo.price.toFixed(2)}</div>
 
           <div className="prose max-w-none mb-8">
-            <p>{photo.description || "No description available."}</p>
+            <p>{photo.description || "Keine Beschreibung verfügbar."}</p>
           </div>
 
           <div className="bg-gray-50 p-6 rounded-lg mb-8">
-            <h3 className="text-lg font-medium mb-2">What's included:</h3>
+            <h3 className="text-lg font-medium mb-2">Im Kauf enthalten:</h3>
             <ul className="space-y-2 text-sm">
               <li className="flex items-start">
                 <span className="mr-2">•</span>
-                <span>Full resolution image (4000x3000px)</span>
+                <span>Bild in voller Auflösung (4000x3000px)</span>
               </li>
               <li className="flex items-start">
                 <span className="mr-2">•</span>
-                <span>No watermark</span>
+                <span>Ohne Wasserzeichen</span>
               </li>
               <li className="flex items-start">
                 <span className="mr-2">•</span>
-                <span>Personal and commercial usage rights</span>
+                <span>Persönliche und kommerzielle Nutzungsrechte</span>
               </li>
               <li className="flex items-start">
                 <span className="mr-2">•</span>
-                <span>Instant download after purchase</span>
+                <span>Sofortiger Download nach dem Kauf</span>
               </li>
             </ul>
           </div>
