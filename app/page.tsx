@@ -1,10 +1,11 @@
 import Link from "next/link"
 import PhotoGallery from "@/components/photo-gallery"
 import { fetchPhotos, fetchCollections } from "@/lib/sanity"
+import { Photo } from "@/lib/types"
 
 export default async function Home() {
-  let photos = []
-  let collections = []
+  let photos: Photo[] = []
+  let collections: any[] = []
 
   try {
     photos = await fetchPhotos()

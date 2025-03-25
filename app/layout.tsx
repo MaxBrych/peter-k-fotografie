@@ -20,6 +20,7 @@ export default function RootLayout({
         <div className="relative flex min-h-screen flex-col">
           <SiteHeader />
           <main className="flex-1">{children}</main>
+          <Footer/>
         </div>
         <Toaster />
       </body>
@@ -30,3 +31,4 @@ export default function RootLayout({
 
 
 import './globals.css'
+import Footer from "@/components/footer"
