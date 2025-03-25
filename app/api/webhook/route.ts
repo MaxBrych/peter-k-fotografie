@@ -2,19 +2,19 @@ import { NextResponse } from "next/server"
 import Stripe from "stripe"
 
 // Check if the required environment variables are available
-const stripeSecretKey = process.env.STRIPE_SECRET_KEY
-const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET
+const stripeSecretKey = process.env.NEXT_PUBLIC_STRIPE_SECRET_KEY
+const webhookSecret = process.env.NEXT_PUBLIC_STRIPE_WEBHOOK_SECRET
 
 if (!stripeSecretKey) {
-  throw new Error("Missing environment variable: STRIPE_SECRET_KEY")
+  throw new Error("Missing environment variable: NEXT_PUBLIC_STRIPE_SECRET_KEY")
 }
 
 if (!webhookSecret) {
-  throw new Error("Missing environment variable: STRIPE_WEBHOOK_SECRET")
+  throw new Error("Missing environment variable: NEXT_PUBLIC_STRIPE_WEBHOOK_SECRET")
 }
 
 const stripe = new Stripe(stripeSecretKey, {
-  apiVersion: "2023-10-16",
+  apiVersion: "2025-02-24.acacia",
 })
 
 export async function POST(req: Request) {
