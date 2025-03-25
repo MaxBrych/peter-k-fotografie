@@ -1,7 +1,13 @@
 import Link from "next/link"
 import { notFound } from "next/navigation"
 import PhotoGallery from "@/components/photo-gallery"
-import { fetchCollectionBySlug, fetchPhotosByCollection, fetchCollections } from "@/lib/sanity"
+import { BlogPostPreview } from "@/components/blog-post-preview"
+import {
+  fetchCollectionBySlug,
+  fetchPhotosByCollection,
+  fetchCollections,
+  fetchBlogPostsByCollection,
+} from "@/lib/sanity"
 
 interface CollectionPageProps {
   params: {
@@ -24,10 +30,12 @@ export default async function CollectionPage({ params }: CollectionPageProps) {
 
   let photos: string | any[] = []
   let collections: any[] = []
+  let relatedPosts = []
 
   try {
     photos = await fetchPhotosByCollection(collection._id)
     collections = await fetchCollections()
+    relatedPosts = await fetchBlogPostsByCollection(collection._id)
   } catch (error) {
     console.error("Error fetching data:", error)
   }
@@ -55,6 +63,17 @@ export default async function CollectionPage({ params }: CollectionPageProps) {
         <PhotoGallery photos={photos} />
       ) : (
         <p className="text-center text-gray-600">Keine Fotos in dieser Kollektion gefunden.</p>
+      )}
+
+      {relatedPosts.length > 0 && (
+        <div className="mt-16">
+          <h2 className="text-2xl font-medium text-center mb-8">Zugehörige Blogbeiträge</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {relatedPosts.map((post) => (
+              <BlogPostPreview key={post._id} post={post} />
+            ))}
+          </div>
+        </div>
       )}
     </div>
   )

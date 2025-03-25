@@ -14,7 +14,9 @@ export function SiteHeader() {
             <Link href="/collections" className="text-sm hover:underline">
               Kollektionen
             </Link>
-            
+            <Link href="/blog" className="text-sm hover:underline">
+              Blog
+            </Link> 
             <Link href="/about" className="text-sm hover:underline">
               Über Mich
             </Link>

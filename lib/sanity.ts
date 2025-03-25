@@ -161,3 +161,73 @@ export async function fetchCategories(): Promise<any[]> {
   }
 }
 
+export async function fetchBlogPosts(): Promise<any[]> {
+  const query = `*[_type == "blogPost"] | order(publishedAt desc) {
+    _id,
+    title,
+    "slug": slug.current,
+    publishedAt,
+    author,
+    excerpt,
+    "featuredImageUrl": featuredImage.asset->url,
+    "collection": collection->{
+      _id,
+      title,
+      "slug": slug.current
+    }
+  }`
+
+  try {
+    return await client.fetch(query)
+  } catch (error) {
+    console.error("Error fetching blog posts:", error)
+    return []
+  }
+}
+
+export async function fetchBlogPostBySlug(slug: string): Promise<any | null> {
+  const query = `*[_type == "blogPost" && slug.current == $slug][0] {
+    _id,
+    title,
+    "slug": slug.current,
+    publishedAt,
+    author,
+    excerpt,
+    "featuredImageUrl": featuredImage.asset->url,
+    content,
+    "collection": collection->{
+      _id,
+      title,
+      "slug": slug.current,
+      description
+    }
+  }`
+
+  try {
+    return await client.fetch(query, { slug })
+  } catch (error) {
+    console.error("Error fetching blog post:", error)
+    return null
+  }
+}
+
+// Add this function to fetch blog posts related to a collection
+export async function fetchBlogPostsByCollection(collectionId: string): Promise<any[]> {
+  const query = `*[_type == "blogPost" && collection._ref == $collectionId] | order(publishedAt desc) {
+    _id,
+    title,
+    "slug": slug.current,
+    publishedAt,
+    author,
+    excerpt,
+    "featuredImageUrl": featuredImage.asset->url
+  }`
+
+  try {
+    return await client.fetch(query, { collectionId })
+  } catch (error) {
+    console.error("Error fetching blog posts by collection:", error)
+    return []
+  }
+}
+
