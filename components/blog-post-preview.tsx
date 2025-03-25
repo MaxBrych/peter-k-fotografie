@@ -35,11 +35,12 @@ export function BlogPostPreview({ post }: BlogPostPreviewProps) {
             <div className="w-full h-full flex items-center justify-center text-gray-400">Kein Bild verfügbar</div>
           )}
         </div>
-        <h2 className="text-xl font-medium group-hover:underline">{post.title}</h2>
-      </Link>
-      <div className="mt-2 text-sm text-gray-600">
+        <div className="mt-2 text-sm text-gray-600">
         <time dateTime={post.publishedAt}>{formatDate(post.publishedAt)}</time> • {post.author}
       </div>
+        <h2 className="text-xl font-medium group-hover:underline">{post.title}</h2>
+      </Link>
+     
       {post.excerpt && <p className="mt-2 text-gray-700 line-clamp-3">{post.excerpt}</p>}
       {post.collection && (
         <div className="mt-3">
