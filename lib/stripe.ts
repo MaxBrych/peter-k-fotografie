@@ -49,7 +49,7 @@ export async function createCheckoutSession(photo: Photo): Promise<string> {
     console.log("Creating checkout session with params:", {
       mode: "payment",
       hasProductData: !!productData,
-      currency: "usd",
+      currency: "eur",
       amount: Math.round(photo.price * 100),
       successUrl: `${baseUrl}/success?session_id={CHECKOUT_SESSION_ID}`,
       cancelUrl: `${baseUrl}/photos/${photo.slug}`,
@@ -60,7 +60,7 @@ export async function createCheckoutSession(photo: Photo): Promise<string> {
       line_items: [
         {
           price_data: {
-            currency: "usd",
+            currency: "eur",
             product_data: productData,
             unit_amount: Math.round(photo.price * 100),
           },

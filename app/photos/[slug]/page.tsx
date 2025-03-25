@@ -72,7 +72,7 @@ export default async function PhotoPage({ params }: PhotoPageProps) {
             </div>
           )}
 
-          <div className="text-xl font-medium mb-6">${photo.price.toFixed(2)}</div>
+          <div className="text-xl font-medium mb-6">€{photo.price.toFixed(2)}</div>
 
           <div className="prose max-w-none mb-8">
             <p>{photo.description || "Keine Beschreibung verfügbar."}</p>
