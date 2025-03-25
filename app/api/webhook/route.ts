@@ -26,6 +26,10 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Missing stripe-signature header" }, { status: 400 })
     }
 
+    if (!webhookSecret) {
+      return NextResponse.json({ error: "Missing webhook secret" }, { status: 400 })
+    }
+
     const event = stripe.webhooks.constructEvent(body, signature, webhookSecret)
 
     if (event.type === "checkout.session.completed") {
