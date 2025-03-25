@@ -10,23 +10,36 @@ interface CollectionPageProps {
 }
 
 export default async function CollectionPage({ params }: CollectionPageProps) {
-  const collection = await fetchCollectionBySlug(params.slug)
+  let collection
+
+  try {
+    collection = await fetchCollectionBySlug(params.slug)
+  } catch (error) {
+    console.error("Error fetching collection:", error)
+  }
 
   if (!collection) {
     notFound()
   }
 
-  const photos = await fetchPhotosByCollection(collection._id)
-  const collections = await fetchCollections()
+  let photos: string | any[] = []
+  let collections: any[] = []
+
+  try {
+    photos = await fetchPhotosByCollection(collection._id)
+    collections = await fetchCollections()
+  } catch (error) {
+    console.error("Error fetching data:", error)
+  }
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <div className="mb-8 flex items-center justify-center space-x-6">
+      <div className="mb-8 flex items-center justify-center space-x-6 flex-wrap">
         {collections.map((col) => (
           <Link
             key={col._id}
             href={`/collections/${col.slug}`}
-            className={`text-sm ${col.slug === params.slug ? "text-black font-medium" : "text-gray-600"} hover:text-black hover:underline`}
+            className={`text-sm ${col.slug === params.slug ? "text-black font-medium" : "text-gray-600"} hover:text-black hover:underline mb-2`}
           >
             {col.title}
           </Link>

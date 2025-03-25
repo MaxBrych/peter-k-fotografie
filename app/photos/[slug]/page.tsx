@@ -11,11 +11,24 @@ interface PhotoPageProps {
 }
 
 export default async function PhotoPage({ params }: PhotoPageProps) {
-  const photo = await fetchPhotoBySlug(params.slug)
-  const collections = await fetchCollections()
+  let photo
+
+  try {
+    photo = await fetchPhotoBySlug(params.slug)
+  } catch (error) {
+    console.error("Error fetching photo:", error)
+  }
 
   if (!photo) {
     notFound()
+  }
+
+  let collections = []
+
+  try {
+    collections = await fetchCollections()
+  } catch (error) {
+    console.error("Error fetching collections:", error)
   }
 
   return (
@@ -36,7 +49,6 @@ export default async function PhotoPage({ params }: PhotoPageProps) {
             className="object-contain"
             priority
           />
-          <div className="absolute inset-0 bg-black bg-opacity-0 hover:bg-opacity-5 transition-opacity duration-300" />
         </div>
 
         {/* Right column - Details */}
@@ -63,7 +75,7 @@ export default async function PhotoPage({ params }: PhotoPageProps) {
           <div className="text-xl font-medium mb-6">${photo.price.toFixed(2)}</div>
 
           <div className="prose max-w-none mb-8">
-            <p>{photo.description}</p>
+            <p>{photo.description || "No description available."}</p>
           </div>
 
           <div className="bg-gray-50 p-6 rounded-lg mb-8">

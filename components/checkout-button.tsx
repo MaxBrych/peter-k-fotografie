@@ -26,7 +26,6 @@ export default function CheckoutButton({ photo }: CheckoutButtonProps) {
         description: "There was a problem processing your payment. Please try again.",
         variant: "destructive",
       })
-    } finally {
       setIsLoading(false)
     }
   }

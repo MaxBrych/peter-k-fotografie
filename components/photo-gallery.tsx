@@ -3,6 +3,7 @@
 import Image from "next/image"
 import Link from "next/link"
 import type { Photo } from "@/lib/types"
+import { SkeletonGallery } from "./skeleton-gallery"
 
 interface PhotoGalleryProps {
   photos: Photo[]
@@ -20,6 +21,11 @@ export default function PhotoGallery({ photos = [] }: PhotoGalleryProps) {
     return columns
   }
 
+  // If no photos, show skeleton
+  if (photos.length === 0) {
+    return <SkeletonGallery />
+  }
+
   // Responsive column count
   const columns = createColumns(photos, 3)
 
@@ -29,13 +35,14 @@ export default function PhotoGallery({ photos = [] }: PhotoGalleryProps) {
         <div key={columnIndex} className="flex flex-col gap-4">
           {column.map((photo) => (
             <Link key={photo._id} href={`/photos/${photo.slug}`} className="block w-full">
-              <div className="relative aspect-[4/3] overflow-hidden">
+              <div className="relative aspect-[4/3] overflow-hidden bg-gray-50">
                 <Image
                   src={`${photo.imageUrl}?w=800&q=75`} // Lower quality preview
                   alt={photo.title}
                   fill
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   className="object-cover hover:scale-105 transition-transform duration-300"
+                  loading="lazy"
                 />
               </div>
             </Link>

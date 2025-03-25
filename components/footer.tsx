@@ -15,17 +15,17 @@ export default function Footer() {
 
           <div className="flex flex-col md:flex-row items-center space-y-2 md:space-y-0 md:space-x-8 text-sm">
             <Link href="/terms" className="hover:text-gray-600 transition">
-              Terms & Conditions
+              Impressum
             </Link>
             <Link href="/privacy" className="hover:text-gray-600 transition">
-              Privacy Policy
+              Datenschutzerklärung
             </Link>
             <Link href="/contact" className="hover:text-gray-600 transition">
-              Contact
+              Kontakt
             </Link>
           </div>
 
-          <div className="mt-4 md:mt-0 text-sm text-gray-500">&copy; {currentYear} PETER Photography</div>
+          <div className="mt-4 md:mt-0 text-sm text-gray-500">&copy; {currentYear} PETER KRÜGER Fotografie</div>
         </div>
       </div>
     </footer>
