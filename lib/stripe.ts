@@ -1,5 +1,5 @@
 import Stripe from "stripe"
-import type { Photo } from "./types"
+import type { Photo, Collection } from "./types"
 
 // Check if the STRIPE_SECRET_KEY is available
 const stripeSecretKey = process.env.NEXT_PUBLIC_STRIPE_SECRET_KEY
@@ -20,15 +20,6 @@ export async function createCheckoutSession(photo: Photo): Promise<string> {
     throw new Error("Missing environment variable: NEXT_PUBLIC_BASE_URL")
   }
 
-  // Log environment information (will only show in server logs)
-  console.log("Environment:", {
-    nodeEnv: process.env.NODE_ENV,
-    baseUrl,
-    hasStripeKey: !!stripeSecretKey,
-    photoId: photo._id,
-    photoTitle: photo.title,
-  })
-
   try {
     // Create product data with conditional description
     const productData: Stripe.Checkout.SessionCreateParams.LineItem.PriceData.ProductData = {
@@ -45,16 +36,6 @@ export async function createCheckoutSession(photo: Photo): Promise<string> {
       productData.description = photo.description
     }
 
-    // Log the checkout session parameters (sensitive info redacted)
-    console.log("Creating checkout session with params:", {
-      mode: "payment",
-      hasProductData: !!productData,
-      currency: "eur",
-      amount: Math.round(photo.price * 100),
-      successUrl: `${baseUrl}/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancelUrl: `${baseUrl}/photos/${photo.slug}`,
-    })
-
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
       line_items: [
@@ -68,34 +49,78 @@ export async function createCheckoutSession(photo: Photo): Promise<string> {
         },
       ],
       mode: "payment",
-      success_url: `${baseUrl}/success?session_id={CHECKOUT_SESSION_ID}`,
+      success_url: `${baseUrl}/success?session_id={CHECKOUT_SESSION_ID}&type=photo&id=${photo._id}`,
       cancel_url: `${baseUrl}/photos/${photo.slug}`,
+      metadata: {
+        type: "photo",
+        photoId: photo._id,
+      },
     })
 
     if (!session.url) {
       throw new Error("Failed to create checkout session URL")
     }
 
-    console.log("Checkout session created successfully:", {
-      sessionId: session.id,
-      hasUrl: !!session.url,
-    })
-
     return session.url
   } catch (error) {
-    // Enhanced error logging
-    console.error("Stripe checkout error details:", {
-      error: error instanceof Error ? error.message : String(error),
-      stack: error instanceof Error ? error.stack : undefined,
-      photo: {
-        id: photo._id,
-        title: photo.title,
-        hasDescription: !!photo.description,
-        hasImageUrl: !!photo.imageUrl,
+    console.error("Stripe checkout error:", error)
+    throw new Error(`Failed to create checkout session: ${error instanceof Error ? error.message : String(error)}`)
+  }
+}
+
+export async function createCollectionCheckoutSession(collection: Collection): Promise<string> {
+  // Ensure we have a base URL
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL
+  if (!baseUrl) {
+    throw new Error("Missing environment variable: NEXT_PUBLIC_BASE_URL")
+  }
+
+  if (!collection.price) {
+    throw new Error("Collection price is required")
+  }
+
+  try {
+    // Create product data
+    const productData: Stripe.Checkout.SessionCreateParams.LineItem.PriceData.ProductData = {
+      name: `Kollektion: ${collection.title}`,
+    }
+
+    // Only add description if it exists and is not empty
+    if (collection.description && collection.description.trim() !== "") {
+      productData.description = collection.description
+    }
+
+    const session = await stripe.checkout.sessions.create({
+      payment_method_types: ["card"],
+      line_items: [
+        {
+          price_data: {
+            currency: "eur",
+            product_data: productData,
+            unit_amount: Math.round(collection.price * 100),
+          },
+          quantity: 1,
+        },
+      ],
+      mode: "payment",
+      success_url: `${baseUrl}/success?session_id={CHECKOUT_SESSION_ID}&type=collection&id=${collection._id}`,
+      cancel_url: `${baseUrl}/collections/${collection.slug}`,
+      metadata: {
+        type: "collection",
+        collectionId: collection._id,
       },
     })
 
-    throw new Error(`Failed to create checkout session: ${error instanceof Error ? error.message : String(error)}`)
+    if (!session.url) {
+      throw new Error("Failed to create checkout session URL")
+    }
+
+    return session.url
+  } catch (error) {
+    console.error("Stripe collection checkout error:", error)
+    throw new Error(
+      `Failed to create collection checkout session: ${error instanceof Error ? error.message : String(error)}`,
+    )
   }
 }
 

@@ -2,7 +2,17 @@ import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { CheckCircle } from "lucide-react"
 
-export default function SuccessPage() {
+interface SuccessPageProps {
+  searchParams: {
+    session_id?: string
+    type?: string
+    id?: string
+  }
+}
+
+export default function SuccessPage({ searchParams }: SuccessPageProps) {
+  const { type = "photo" } = searchParams
+
   return (
     <div className="container mx-auto px-4 py-24">
       <div className="max-w-md mx-auto text-center">
@@ -11,8 +21,17 @@ export default function SuccessPage() {
         </div>
         <h1 className="text-3xl font-bold mb-4">Vielen Dank für Ihren Kauf!</h1>
         <p className="text-muted-foreground mb-8">
-          Ihre Zahlung war erfolgreich und Ihr Foto wird in Kürze zum Download bereitstehen. Wir haben eine
-          Bestätigungs-E-Mail mit allen Details gesendet.
+          {type === "collection" ? (
+            <>
+              Ihre Zahlung war erfolgreich und alle Fotos der Kollektion werden in Kürze zum Download bereitstehen. Wir
+              haben eine Bestätigungs-E-Mail mit allen Details gesendet.
+            </>
+          ) : (
+            <>
+              Ihre Zahlung war erfolgreich und Ihr Foto wird in Kürze zum Download bereitstehen. Wir haben eine
+              Bestätigungs-E-Mail mit allen Details gesendet.
+            </>
+          )}
         </p>
         <Link href="/">
           <Button>Zurück zur Galerie</Button>

@@ -53,11 +53,10 @@ export default async function PhotoPage({ params }: PhotoPageProps) {
 
         {/* Right column - Details */}
         <div className="flex flex-col">
-          <h1 className="text-3xl font-medium mb-2">{photo.title}</h1>
+         
 
           {photo.collections && photo.collections.length > 0 && (
             <div className="mb-6">
-              <div className="text-sm text-gray-600 mb-1">Kollektionen:</div>
               <div className="flex flex-wrap gap-2">
                 {photo.collections.map((collection) => (
                   <Link
@@ -71,7 +70,7 @@ export default async function PhotoPage({ params }: PhotoPageProps) {
               </div>
             </div>
           )}
-
+ <h1 className="text-3xl font-medium mb-2">{photo.title}</h1>
           <div className="text-xl font-medium mb-6">€{photo.price.toFixed(2)}</div>
 
           <div className="prose max-w-none mb-8">

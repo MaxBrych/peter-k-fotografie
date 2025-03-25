@@ -6,11 +6,11 @@ const stripeSecretKey = process.env.NEXT_PUBLIC_STRIPE_SECRET_KEY
 const webhookSecret = process.env.NEXT_PUBLIC_STRIPE_WEBHOOK_SECRET
 
 if (!stripeSecretKey) {
-  throw new Error("Missing environment variable: NEXT_PUBLIC_STRIPE_SECRET_KEY")
+  throw new Error("Missing environment variable: STRIPE_SECRET_KEY")
 }
 
 if (!webhookSecret) {
-  throw new Error("Missing environment variable: NEXT_PUBLIC_STRIPE_WEBHOOK_SECRET")
+  throw new Error("Missing environment variable: STRIPE_WEBHOOK_SECRET")
 }
 
 const stripe = new Stripe(stripeSecretKey, {
@@ -25,11 +25,9 @@ export async function POST(req: Request) {
     if (!signature) {
       return NextResponse.json({ error: "Missing stripe-signature header" }, { status: 400 })
     }
-
     if (!webhookSecret) {
       return NextResponse.json({ error: "Missing webhook secret" }, { status: 400 })
     }
-
     const event = stripe.webhooks.constructEvent(body, signature, webhookSecret)
 
     if (event.type === "checkout.session.completed") {
@@ -38,11 +36,27 @@ export async function POST(req: Request) {
       // Handle successful payment
       console.log("Payment successful for session:", session.id)
 
-      // Here you would typically:
-      // 1. Update your database
-      // 2. Send confirmation emails
-      // 3. Generate download links
-      // etc.
+      // Check if it's a photo or collection purchase
+      const purchaseType = session.metadata?.type
+
+      if (purchaseType === "photo") {
+        const photoId = session.metadata?.photoId
+        console.log("Photo purchased:", photoId)
+
+        // Here you would:
+        // 1. Update your database to mark the photo as purchased by this customer
+        // 2. Generate download links
+        // 3. Send confirmation email with download links
+      } else if (purchaseType === "collection") {
+        const collectionId = session.metadata?.collectionId
+        console.log("Collection purchased:", collectionId)
+
+        // Here you would:
+        // 1. Fetch all photos in the collection
+        // 2. Update your database to mark all photos as purchased by this customer
+        // 3. Generate download links for all photos
+        // 4. Send confirmation email with download links
+      }
     }
 
     return NextResponse.json({ received: true })

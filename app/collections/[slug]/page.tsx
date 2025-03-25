@@ -2,6 +2,7 @@ import Link from "next/link"
 import { notFound } from "next/navigation"
 import PhotoGallery from "@/components/photo-gallery"
 import { BlogPostPreview } from "@/components/blog-post-preview"
+import CollectionCheckoutButton from "@/components/collection-checkout-button"
 import {
   fetchCollectionBySlug,
   fetchPhotosByCollection,
@@ -28,7 +29,7 @@ export default async function CollectionPage({ params }: CollectionPageProps) {
     notFound()
   }
 
-  let photos: string | any[] = []
+  let photos: any[] = []
   let collections: any[] = []
   let relatedPosts = []
 
@@ -39,6 +40,11 @@ export default async function CollectionPage({ params }: CollectionPageProps) {
   } catch (error) {
     console.error("Error fetching data:", error)
   }
+
+  // Calculate total price of individual photos
+  const totalIndividualPrice = photos.reduce((sum, photo) => sum + photo.price, 0)
+  const savings = collection.price ? totalIndividualPrice - collection.price : 0
+  const savingsPercentage = totalIndividualPrice > 0 ? Math.round((savings / totalIndividualPrice) * 100) : 0
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -54,10 +60,33 @@ export default async function CollectionPage({ params }: CollectionPageProps) {
         ))}
       </div>
 
-      <div className="max-w-3xl mx-auto text-center mb-12">
+      <div className="max-w-3xl mx-auto text-center mb-8">
         <h1 className="text-3xl font-medium mb-4">{collection.title}</h1>
-        {collection.description && <p className="text-gray-600">{collection.description}</p>}
+        {collection.description && <p className="text-gray-600 mb-6">{collection.description}</p>}
       </div>
+
+      {collection.price && photos.length > 0 && (
+        <div className="max-w-2xl mx-auto mb-12 bg-gray-50 p-6 rounded-lg">
+          <div className="flex flex-col md:flex-row md:items-center justify-between mb-4">
+            <div>
+              <h2 className="text-xl font-medium">Komplette Kollektion</h2>
+              <p className="text-gray-600">{photos.length} Fotos</p>
+            </div>
+            <div className="mt-4 md:mt-0 text-right">
+              <div className="text-2xl font-medium">€{collection.price.toFixed(2)}</div>
+              {savingsPercentage > 0 && (
+                <div className="text-sm text-green-600">
+                  {savingsPercentage}% Rabatt (Sie sparen €{savings.toFixed(2)})
+                </div>
+              )}
+            </div>
+          </div>
+
+          <div className="mt-4">
+            <CollectionCheckoutButton collection={collection} photoCount={photos.length} />
+          </div>
+        </div>
+      )}
 
       {photos.length > 0 ? (
         <PhotoGallery photos={photos} />

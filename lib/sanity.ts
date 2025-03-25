@@ -59,12 +59,15 @@ export async function fetchPhotoBySlug(slug: string): Promise<Photo | null> {
   }
 }
 
+// Update the fetchCollections function
 export async function fetchCollections(): Promise<Collection[]> {
   const query = `*[_type == "collection"] {
     _id,
     title,
     "slug": slug.current,
-    description
+    description,
+    price,
+    discount
   }`
 
   try {
@@ -75,12 +78,15 @@ export async function fetchCollections(): Promise<Collection[]> {
   }
 }
 
+// Update the fetchCollectionBySlug function
 export async function fetchCollectionBySlug(slug: string): Promise<Collection | null> {
   const query = `*[_type == "collection" && slug.current == $slug][0] {
     _id,
     title,
     "slug": slug.current,
-    description
+    description,
+    price,
+    discount
   }`
 
   try {

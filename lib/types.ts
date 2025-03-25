@@ -3,6 +3,8 @@ export interface Collection {
   title: string
   slug: string
   description?: string
+  price?: number
+  discount?: number
 }
 
 export interface Photo {
