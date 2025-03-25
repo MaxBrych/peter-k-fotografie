@@ -38,20 +38,11 @@ export function BlogPostPreview({ post }: BlogPostPreviewProps) {
         <div className="mt-2 text-sm text-gray-600">
         <time dateTime={post.publishedAt}>{formatDate(post.publishedAt)}</time> • {post.author}
       </div>
-        <h2 className="text-xl font-medium group-hover:underline">{post.title}</h2>
+        <h2 className="text-xl mt-2 font-medium group-hover:underline">{post.title}</h2>
       </Link>
      
       {post.excerpt && <p className="mt-2 text-gray-700 line-clamp-3">{post.excerpt}</p>}
-      {post.collection && (
-        <div className="mt-3">
-          <Link
-            href={`/collections/${post.collection.slug}`}
-            className="text-sm bg-gray-100 px-3 py-1 rounded-full hover:bg-gray-200 inline-block"
-          >
-            Kollektion: {post.collection.title}
-          </Link>
-        </div>
-      )}
+      
     </article>
   )
 }
